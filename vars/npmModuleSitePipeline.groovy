@@ -1,5 +1,5 @@
 final sharedlib = library('sharedlib@master')
-def call(Map pipelineParams)
+def call(Map pipelineParams) {
 
 pipeline {
     agent any
@@ -28,4 +28,5 @@ pipeline {
             }
         }
     }
+}
 }    
