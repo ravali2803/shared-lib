@@ -41,8 +41,6 @@ pipeline {
             }
             steps {
                 echo
-
-            }                
-
+            } 
     }
 }
