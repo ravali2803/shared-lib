@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 final sharedlib = library('sharedlib@master')
-=======
-final shared-lib = library('shared-lib@master')
->>>>>>> 16af0a42c25a9ff7fce76856de7bfa868142fccc
 def call(Map PipelineParams)
 
 pipeline {
