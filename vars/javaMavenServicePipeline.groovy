@@ -3,9 +3,11 @@ def call(Map pipelineParams) {
 
 pipeline {
     agent any
+    environment {
     developer = 'ravali'
     QA = 'ravali'
     PO = 'ravali'
+    }
     stages {
         stage('Compile') {
             steps {
