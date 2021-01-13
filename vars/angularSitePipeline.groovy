@@ -26,7 +26,10 @@ pipeline {
         }
         stage('Publish to Artifactory') {
             when {
+                anyOf {
                 branch 'master'
+                branch 'hotfix-1'
+                }    
             }
             steps {
                 echo 'publish npm package to artifactory'
@@ -85,7 +88,9 @@ pipeline {
         }
         stage('Production Deploy') {
             when {
+                anyOf {
                 branch 'master'
+                }    
             }
             steps {
                 echo 'Production deploy'
