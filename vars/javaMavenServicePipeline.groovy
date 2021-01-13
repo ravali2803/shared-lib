@@ -6,7 +6,6 @@ pipeline {
     developer = 'ravali'
     QA = 'ravali'
     PO = 'ravali'
-
     stages {
         stage('Compile') {
             steps {
@@ -47,6 +46,7 @@ pipeline {
             steps {
                 input message: 'hey developer would you like to promote to QA env', ok: 'proceed abort', submitter: env.developer, submitterParameter: 'approver'
             }
+        }    
         stage('QA Deploy') {
             when {
                 branch 'master'
