@@ -27,8 +27,8 @@ pipeline {
         stage('Publish to Artifactory') {
             when {
                 anyOf {
-                branch 'master'
-                branch 'hotfix-1'
+                    branch 'master'
+                    branch 'hotfix-1'
                 }    
             }
             steps {
@@ -71,7 +71,10 @@ pipeline {
         }
         stage('Staging Deploy') {
             when {
-                branch 'master'
+                anyOf {
+                    branch 'master'
+                    branch 'hotfix-1'
+                }
             }
             steps {
                 echo 'staging deploy'
@@ -80,7 +83,10 @@ pipeline {
         stage ('Staging-->Production') {
             agent none
             when {
-                branch 'master'
+                anyOf {
+                    branch 'master'
+                    branch 'hotfix-1'
+                }    
             }
             steps {
                 input message: 'hey PO would you like to promote to prod env', ok: 'proceed', submitter: env.PO, submitterParameter: 'approver'
@@ -89,7 +95,8 @@ pipeline {
         stage('Production Deploy') {
             when {
                 anyOf {
-                branch 'master'
+                    branch 'master'
+                    branch 'hotfix-1'
                 }    
             }
             steps {

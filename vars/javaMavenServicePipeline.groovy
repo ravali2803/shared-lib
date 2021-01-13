@@ -2,40 +2,44 @@ final sharedlib = library('sharedlib@master')
 def call(Map pipelineParams) {
 
 pipeline {
-    agent any
     environment {
     developer = 'ravali'
     QA = 'ravali'
     PO = 'ravali'
     }
     stages {
+        agent any
         stage('Compile') {
             steps {
                 echo 'mvn clean install'
             }
         }
         stage('Unit Test') {
+            agent any
             steps {
                 echo 'mvn test'
             }
         }
         stage('Code Analysis') {
+            agent any
             steps {
                 echo 'sonar analysis'
             }
         }
         stage('Publish to Artifactory') {
+            agent any
             when {
                 anyOf {
-                branch 'master'
-                branch 'hotfix-1'
-            }
+                    branch 'master'
+                    branch 'hotfix-1'
+                }
             }
             steps {
                 echo 'publish to artifactory'
             }
         }
         stage('Dev Deploy') {
+            agent any
             when {
                 branch 'master'
             }
@@ -44,7 +48,6 @@ pipeline {
             }
         }
         stage('Dev-->QA') {
-            agent none
             when {
                 branch 'master'
             }
@@ -53,6 +56,7 @@ pipeline {
             }
         }    
         stage('QA Deploy') {
+            agent any
             when {
                 branch 'master'
             }
@@ -61,7 +65,6 @@ pipeline {
             }
         }    
         stage ('QA-->Staging') {
-            agent none
             when {
                 branch 'master'
             }
@@ -70,28 +73,35 @@ pipeline {
             }  
         }
         stage('Staging Deploy') {
+            agent any
             when {
-                branch 'master'
+                anyOf {
+                    branch 'master'
+                    branch 'hotfix-1'
+                }
             }
             steps {
                 echo 'staging deploy'
             }
         }
         stage ('Staging-->Production') {
-            agent none
             when {
-                branch 'master'
+                anyOf {
+                    branch 'master'
+                    branch 'hotfix-1'
+                }
             }
             steps {
                 input message: 'hey PO would you like to promote to prod env', ok: 'proceed', submitter: env.PO, submitterParameter: 'approver'
             }  
         }
         stage('Production Deploy') {
+            agent any
             when {
                 anyOf {
-                branch 'master'
-                branch 'hotfix-1'
-            }
+                    branch 'master'
+                    branch 'hotfix-1'
+                }
             }
             steps {
                 echo 'Production deploy'
