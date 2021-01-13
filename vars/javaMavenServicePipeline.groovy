@@ -2,6 +2,7 @@ final sharedlib = library('sharedlib@master')
 def call(Map pipelineParams) {
 
 pipeline {
+    agent none
     environment {
     developer = 'ravali'
     QA = 'ravali'
