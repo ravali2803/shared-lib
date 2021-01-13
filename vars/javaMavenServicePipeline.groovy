@@ -8,8 +8,8 @@ pipeline {
     PO = 'ravali'
     }
     stages {
-        agent any
         stage('Compile') {
+            agent any
             steps {
                 echo 'mvn clean install'
             }

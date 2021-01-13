@@ -2,7 +2,6 @@ final sharedlib = library('sharedlib@master')
 def call(Map pipelineParams) {
 
 pipeline {
-    agent any
     environment {
     developer = 'ravali'
     QA = 'ravali'
@@ -10,21 +9,25 @@ pipeline {
     }
     stages {
         stage('Compile') {
+            agent any
             steps {
                 echo 'npm clean install'
             }
         }
         stage('Unit Test') {
+            agent any
             steps {
                 echo 'npm test'
             }
         }
         stage('Code Analysis') {
+            agent any
             steps {
                 echo 'sonar analysis'
             }
         }
         stage('Publish to Artifactory') {
+            agent any
             when {
                 anyOf {
                     branch 'master'
@@ -36,6 +39,7 @@ pipeline {
             }
         }
         stage('Dev Deploy') {
+            agent any
             when {
                 branch 'master'
             }
@@ -44,7 +48,6 @@ pipeline {
             }
         }
         stage('Dev-->QA') {
-            agent none
             when {
                 branch 'master'
             }
@@ -53,6 +56,7 @@ pipeline {
             }
         }    
         stage('QA Deploy') {
+            agent any
             when {
                 branch 'master'
             }
@@ -61,7 +65,6 @@ pipeline {
             }
         }    
         stage ('QA-->Staging') {
-            agent none
             when {
                 branch 'master'
             }
@@ -70,6 +73,7 @@ pipeline {
             }  
         }
         stage('Staging Deploy') {
+            agent any
             when {
                 anyOf {
                     branch 'master'
@@ -81,7 +85,6 @@ pipeline {
             }
         }
         stage ('Staging-->Production') {
-            agent none
             when {
                 anyOf {
                     branch 'master'
@@ -93,6 +96,7 @@ pipeline {
             }  
         }
         stage('Production Deploy') {
+            agent any
             when {
                 anyOf {
                     branch 'master'
