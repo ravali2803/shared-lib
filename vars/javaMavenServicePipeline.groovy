@@ -3,6 +3,10 @@ def call(Map pipelineParams) {
 
 pipeline {
     agent any
+    developer = 'ravali'
+    QA = 'ravali'
+    PO = 'ravali'
+
     stages {
         stage('Compile') {
             steps {
@@ -36,13 +40,54 @@ pipeline {
             }
         }
         stage('Dev-->QA') {
+            agent none
             when {
                 branch 'master'
             }
             steps {
-                echo 'dev'
-
-            }                
+                input message: 'hey developer would you like to promote to QA env', ok: 'proceed abort', submitter: env.developer, submitterParameter: 'approver'
+            }
+        stage('QA Deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                echo 'QA deploy'
+            }
+        }    
+        stage ('QA-->Staging') {
+            agent none
+            when {
+                branch 'master'
+            }
+            steps {
+                input message: 'hey QA Engineer would you like to promote to staging env', ok: 'proceed abort', submitter: env.QA, submitterParameter: 'approver'
+            }  
+        }
+        stage('Staging Deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                echo 'staging deploy'
+            }
+        }
+        stage ('Staging-->Production') {
+            agent none
+            when {
+                branch 'master'
+            }
+            steps {
+                input message: 'hey PO would you like to promote to prod env', ok: 'proceed abort', submitter: env.PO, submitterParameter: 'approver'
+            }  
+        }
+        stage('Production Deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                echo 'Production deploy'
+            }    
         }
     }
 }
