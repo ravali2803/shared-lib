@@ -24,7 +24,7 @@ pipeline {
                 branch 'master'
             }
             steps {
-                echo 'publish to npm module repo in artifactory'
+                echo 'publish npm package to npm repo in artifactory'
             }
         }
     }
